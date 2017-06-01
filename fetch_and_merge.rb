@@ -3,13 +3,14 @@ require 'fileutils'
 require 'csv'
 
 YEAR = "15"
+OUTRE_MER = (971..976).map(&:to_s)
 
 def create_dir(path)
   FileUtils::mkdir_p(path) unless Dir.exist?(path)
 end
 
 # 975 data is missing for now
-departements = ((1..95).map(&:to_s) - ['20'] << "2b" << "2a" << (971..976).map(&:to_s)).flatten! - ['975']
+departements = ((1..95).map(&:to_s) - ['20'] << "2b" << "2a" << OUTRE_MER).flatten! - ['975']
 departements.map! { |d| d.rjust(2, '0') }
 
 # Get all XLS files
@@ -36,7 +37,11 @@ departements.each do |d|
   # Add departement code and trailing zeroes to commune code in first column for each csv, for each category
   #
   %w(TH FB FNB CFE).each do |cat|
-    `awk 'BEGIN{FS=OFS=\",\"} NR> 6 { $1=sprintf(\"%03d\", $1);$1=\"#{d.upcase}\"$1}1' tmp/rei_#{YEAR}_#{d}_#{cat}.csv > tmp/rei_#{YEAR}_#{d}_#{cat}_clean.csv`
+    if OUTRE_MER.include?(d) # code insee is still 5 numbers for outre mer
+      `awk 'BEGIN{FS=OFS=\",\"} NR> 6 { $1=sprintf(\"%02d\", $1);$1=\"#{d.upcase}\"$1}1' tmp/rei_#{YEAR}_#{d}_#{cat}.csv > tmp/rei_#{YEAR}_#{d}_#{cat}_clean.csv`
+    else
+      `awk 'BEGIN{FS=OFS=\",\"} NR> 6 { $1=sprintf(\"%03d\", $1);$1=\"#{d.upcase}\"$1}1' tmp/rei_#{YEAR}_#{d}_#{cat}.csv > tmp/rei_#{YEAR}_#{d}_#{cat}_clean.csv`
+    end
   end
   # TaxesAnnexes : later
 end
