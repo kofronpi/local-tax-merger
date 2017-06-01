@@ -1,3 +1,4 @@
+code_insee, nom_commune, base_nette_commune, taux_commune, produit_commune, base_nette_syndicat, taux_syndicat, produit_syndicat, base_nette_interco, taux_interco, produit_interco, base_nette_tse, taux_tse, produit_tse
 01001,"ABERGEMENT CLEMENCIAT ",22870,"21,8",4985,"- ","    .     ","- ",22870,"3,06",699,"- ","      .   ","- "
 01002,"ABERGEMENT DE VAREY ","- ","       .  ","- ","- ","    .     ","- ",9781,"19,22",1880,9781,"0,914",93
 01004,"AMBERIEU EN BUGEY ","- ","       .  ","- ","- ","    .     ","- ",5700400,"19,22",1095606,5700400,"0,914",52264

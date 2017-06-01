@@ -8,6 +8,7 @@ def create_dir(path)
   FileUtils::mkdir_p(path) unless Dir.exist?(path)
 end
 
+# 975 data is missing for now
 departements = ((1..95).map(&:to_s) - ['20'] << "2b" << "2a" << (971..976).map(&:to_s)).flatten! - ['975']
 departements.map! { |d| d.rjust(2, '0') }
 
@@ -48,3 +49,9 @@ system("awk 'FNR < 7{next;}{print}' ./tmp/*_TH_clean.csv > ./output/taxe_habitat
 system("awk 'FNR < 7{next;}{print}' ./tmp/*_FB_clean.csv > ./output/taxe_fonciere_bati.csv")
 system("awk 'FNR < 7{next;}{print}' ./tmp/*_FNB_clean.csv > ./output/taxe_fonciere_non_bati.csv")
 system("awk 'FNR < 7{next;}{print}' ./tmp/*_CFE_clean.csv > ./output/taxe_cfe.csv")
+
+# Add a one-line header to output CSV files
+system("sed -i.bak 1i'code_insee, nom_commune, base_nette_commune, taux_commune, produit_commune, base_nette_syndicat, taux_syndicat, produit_syndicat, base_nette_interco, taux_interco, produit_interco, base_nette_tse, taux_tse, produit_tse' ./output/taxe_cfe.csv")
+system("sed -i.bak 1i'code_insee, nom_commune, base_nette_commune, taux_commune, produit_commune, base_nette_syndicat, taux_syndicat, produit_syndicat, base_nette_interco, taux_interco, produit_interco base_nette_departement, taux_departement, produit_departement, base_nette_tse, taux_tse, produit_tse' ./output/taxe_fonciere_bati.csv")
+system("sed -i.bak 1i'code_insee, nom_commune, base_nette_commune, taux_commune, produit_commune, base_nette_syndicat, taux_syndicat, produit_syndicat, base_nette_interco, taux_interco, produit_interco, base_nette_tse, taux_tse, produit_tse, base_nette_add_tax_fnb_commune, taux_add_tax_fnb_commune, produit_add_tax_fnb_commune, base_nette_add_tax_fnb_interco, taux_add_tax_fnb_interco, produit_add_tax_fnb_interco' ./output/taxe_fonciere_non_bati.csv")
+system("sed -i.bak 1i'code_insee, nom_commune, base_nette_commune, taux_commune, produit_commune, base_nette_syndicat, taux_syndicat, produit_syndicat, base_nette_interco, taux_interco, produit_interco, base_nette_tse, taux_tse, produit_tse' ./output/taxe_habitation.csv")
